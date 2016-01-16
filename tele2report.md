@@ -67,7 +67,7 @@ If we have this destination we check which one would be the shorter path. This i
 
 Once the table is fully processed this function and the onReceipt() function end.
 
-######4.2 - forwarding Packets (onReciept)
+######Phase 4.2 - forwarding Packets (onReciept)
 This is the communication handling section of the Protocol. First it will strip information needed from the header. Using this information we look up the current Routing Table of the server for a destination to send it to. If this is found we forward the packet and print to console. 
 If not, the packet is discarded and an error is printed to the console.
 
