@@ -47,10 +47,10 @@ We were hampered by the virtualisation process here also, as we used the same ba
 ###Distance Vector Implementation (What makes DV different)
 	-TODO Add a section at the end of every phase evaluating why you chose this
 Our implementation of the Distance Vector approach sits on top of general network setting. 
-#####Phase 1 - Initialisation
+######Phase 1 - Initialisation
 Once a topology is loaded, the main method will create and start an array of servers to the specifications described in the .txt file. During this phase each server is made aware of it's neighbours and the cost to these connections. These then get added to the Server's Routing Table. Starting the server threads while using Distance Vector will begin a timer for each server that executes the update code at a given time interval. This timer is controlled by a constant and is set to 10 seconds for the demonstration.
 
-#####Phase 2 - updateTimer()
+######Phase 2 - updateTimer()
 Every time the timer ticks over, it creates a new timer task. This timer task has the Servers current Routing Table, and a list of it's neighbours.
 We chose to create a new TimerTask every interval as this updates the Routing Table that needs to be sent. The run() method in this Timer Task will distribute the tables current routing table to everyone it's connected to.
 
