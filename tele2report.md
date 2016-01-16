@@ -80,7 +80,8 @@ If not, the packet is discarded and an error is printed to the console.
 
 
 ###What We Learned
-#####Communication
+#####Communication 
+	- TODO Add in Login for Github guest account
 This was a group project and because of this we decided that communication would be very important throughout the project. We thought that Git would be the the best way to organise the code and eliminate conflicts or duplication of work. We chose GitHub as our Git vendor of choice and all of the projects code was committed to there on a regular basis.
 This was our first time using Git in a formal fashion and had the opportunity to learn how branches can be used effectively to work on different sections of the code. Our Link State approach was branched from the Distance Vector code at the stage where the General Network Setting was just about in place. We then used other branches to test code that would otherwise stop the other team members from working, merging them back to master when all major bugs were ironed out.
 
