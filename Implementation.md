@@ -1,10 +1,3 @@
-tables
-Link state
-Client
-Things we learned
-
-
-
 ##Impletmentation of Distance Vector Routing
 
 
@@ -101,3 +94,11 @@ The router then iterates through each vertex in the graph(except itself). If cur
 If it is not an immediately connected vertex it will check the previous value of the vertex, if that is also not in the ArrayList of immediately connected vertexes it will again check previous value of the vertex. 
 
 Eventually it will get to a neighbor vertex that is directly connected to the router. It will then add the destination vertex as the destination and the neighbor vertex as the next hop. The cost is set to the cost to the neighbor vertex.
+
+###Client
+
+Our client is a simple but efficient. It has a text only userface. The user is asked to type a message and then asked for a destination port. The client will continue to ask the user until they give a valid port (above 1000 below 50000). The client in link state is slightly different as it will reply to a flood message confirming that it is infact online by reply with a table of size one, containing only the router it's connected to.
+
+####What We Learned(temporary)
+
+By doing this project we learned a lot about networking, both it's support in java and its history. Much research was done before we could even start the project. We had to learn exactly what distance vector and link state routing protocols are. Wikipedia was an invaluable resource for leaning about things such as Dijkstra's algorithm as it contains visualisations of the algorithm at work.
