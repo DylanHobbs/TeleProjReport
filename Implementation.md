@@ -48,5 +48,56 @@ All of its variables are private and can only be accessed via the available meth
 
 Routing tables can be constructed from either an integer and two arrays (owner, connctions, initialCost) or from a byte array received in a packet. Routing tables can be converted to a byte array for sending.
 
+###Link State
 
+Our link state implmentation has two main stages, the flooding stage and the processing stage. In our virtualised envirnment these both only run once. In the real world they would run every time a router is added or removed.
 
+####Stage 1 - Flooding
+
+After all the servers are initialised on their independant threads they will send a copy of their routing table to all of their connected neighbours, hence flooding. They will also send this to any clients they are connected to.
+
+When a router receives a table it checks if it has received it before. If the table is new to it it will add it to an ArrayList of RoutingTables and then again 'flood' this new table to all of it's connected neighbours. If it already had received the table it won't store or send it to anyone.
+
+Because tables are only flooded once; either when it is received, or when the router is first started, the flooding stage will end relatively quickly. In this regard it's better than distance vector as it wastes less time sending packets.
+
+####Stage 2.0 - Processing
+
+When a router has received all the RoutingTables of all the other routers in the network it will enter the processing stage. In our virtuallised environment this happens a predefined time for ease of use. In the real world this would be run after a new table is added to the ArrayList of received tables.
+
+We use a timer task to schedule this to happen two seconds after the routers are first started.
+
+The timer task calls the createGraph function. This function creates a graph of the entire network from the ArrayList of received RoutingTables. First of all it creates a vertex for each router with an ID which is the router's port. The vertex itself has a cost(initialised to the maximum integer value), a visited boolean, an ArrayList of edges and a pointer to the previous vertex. These are all used by dijkstra's algorithm later.
+
+After creating all the vertexes the createGraph function will iterate through each vertex and find it's matching routing table in the ArrayList of received tables. When it finds the corrasponding table for a vertex it creates an edge for each connection the router has (it's immediate neighbors). When the edge is being created createGraph loops through all the vertexes to find the destination of the edge and add it (instead of just the port number), it's cost is also added from the routing table.
+
+After all the edges have been added to the vertexes a graph is created. Dijkstra's algorithm is now run on the graph.
+
+####Stage 2.1 - Dijkstra's algorithm
+
+Dijkstra's algorithm is used in our server to find the shortest route to every node(client or server) in the network. It is slightly altered to suit our needs.
+
+When algo is first called it finds it's own vertex in the graph. It sets it's cost to 0 and marks it as visited. The currentVertex is then set to home.
+
+The graph loops through the following code while there are still unvisited vertexes 
+
+*start of loop*
+
+* It gets all edges of the current vertex.
+
+* Then iterates through each all of the edges and calculates a temporery cost to that vertex from this vertex. If this cost is lower the the current cost of the destination vertex it replaces it. The destination vertex's previous field is also set to this vertex.
+
+* The current vertex is then marked as visited.
+
+* The unvisited vertex with the lowest cost is then selected from the graph and currentVertex is set to it.
+
+*end of loop*
+
+The router then creates another ArrayList of it's immediately connected vertexes (it's neighbors).
+
+Afterword the RoutingTable is cleared for new data.
+
+The router then iterates through each vertex in the graph(except itself). If current vertex in the loop is in the ArrayList of immediately connected vertexes it adds it to the RoutingTable with its associate cost and itself as the next hop and destination.
+
+If it is not an immediately connected vertex it will check the previous value of the vertex, if that is also not in the ArrayList of immediately connected vertexes it will again check previous value of the vertex. 
+
+Eventually it will get to a neighbor vertex that is directly connected to the router. It will then add the destination vertex as the destination and the neighbor vertex as the next hop. The cost is set to the cost to the neighbor vertex.
