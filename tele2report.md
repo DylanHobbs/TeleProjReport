@@ -4,7 +4,7 @@ Group: PestoPasta
 ####An Implementation of Distance Vector and Link State Routing Protocols
 
 
-#####Distance Vector
+###Distance Vector
 
 Both of these routing implementations operate in a distributed network setting. That being, nodes only know the costs to their neighbours and can only talk to these neighbours.
 Distance Vector itself can be thought of as a distributed version of the Bellman-Ford algorithm. It was used in early days of the Internet (even back when it was the ARPANET) and can be seen in the protocol RIP. 
@@ -21,7 +21,7 @@ In practice, the limitations imposed by virtualisation made staying true to this
 
 
 
-#####Link State
+###Link State
 
 As stated before this routing implementation also works in a distributed setting. This is widely used in practice as it was more fault tolerant than distance vector. On the downside it is a good bit more computationally intensive when compared to Distance Vector. Where in Distance Vector we spread the work of computing routes out among all the routers in a network, in Link State we give everyone a copy of the topology and let everyone compute their own routes. 
 It has been in use in the Internet/ARPANET since 1979 and a number of modern routing protocols are based off Link State such as OSPF and IS-IS, which are widely used.
@@ -42,11 +42,36 @@ We were hampered by the virtualisation process here also, as we used the same ba
 	- No GUI, minimal interface. Terminal clients and servers.
 	- Packet headers for client. (Different to table headers)
 
+
+
 ###Distance Vector Implementation (What makes DV different)
-	- Sits on top of Network setting
-	- Timer started by each server. 
-	- At timer, update packets are sent out.
-	- Receives updates and process table.
+	-TODO Add a section at the end of every phase evaluating why you chose this
+Our implementation of the Distance Vector approach sits on top of general network setting. 
+######Phase 1 - Initialisation
+Once a topology is loaded, the main method will create and start an array of servers to the specifications described in the .txt file. During this phase each server is made aware of it's neighbours and the cost to these connections. These then get added to the Server's Routing Table. Starting the server threads while using Distance Vector will begin a timer for each server that executes the update code at a given time interval. This timer is controlled by a constant and is set to 10 seconds for the demonstration.
+
+######Phase 2 - updateTimer()
+Every time the timer ticks over, it creates a new timer task. This timer task has the Servers current Routing Table, and a list of it's neighbours.
+We chose to create a new TimerTask every interval as this updates the Routing Table that needs to be sent. The run() method in this Timer Task will distribute the tables current routing table to everyone it's connected to.
+
+######Phase 3 - onReciept()
+ServerNode's listener will receive packets for a given Server. These packets may contain messages or could be an Update Packet. Firstly the packet is stripped to get the actual data. This was a problem we ran into during development as DatagramPacket's getData() method would return the full data buffer, which usually contained a lot of empty data. Stripping the data to it's actual size eliminates us running through an empty section at the end of the data when it is being examined.
+If this data is a table we work to process the given table. (See 4.1)
+If the data is a message we work to forward the message to the correct destination. (See 4.2)
+
+######Phase 4.1 - processTable()
+This function is the heart of the Distance Vector Approach. It has access to the Servers own Routing Table and the one passed in. We go through each of the entries in the new table.
+If we come across a destination we don't have, we add it to our table signifying the nextHop field to be the neighbour we received the Routing Table from. The cost for this becomes the neighbours cost, plus the cost to our neighbours.
+
+If we have this destination we check which one would be the shorter path. This is the one that will be in our Routing Table.
+
+Once the table is fully processed this function and the onReceipt() function end.
+
+######4.2 - forwarding Packets (onReciept)
+This is the communication handling section of the Protocol. First it will strip information needed from the header. Using this information we look up the current Routing Table of the server for a destination to send it to. If this is found we forward the packet and print to console. 
+If not, the packet is discarded and an error is printed to the console.
+
+
 
 ###Link State Implementation (What makes LS different)
 	- Flooding description
