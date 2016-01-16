@@ -92,6 +92,6 @@ We also found Slack to be a very important tool for communication. It was alert 
 
 
 ###Closing (temp)
-Overall we found the project to be a lot of fun. It was an interesting project and we decided to model our workflow to be as close to production quality as we could within our skill-level. All of the methods are documents in the source and the commits over time grpahs on Github show a persistent effort toward the project overall.
+Overall we found the project to be a lot of fun. It was an interesting project and we decided to model our workflow to be as close to production quality as we could within our skill-level. All of the methods are documents in the source and the commits over time graphs on Github show a persistent effort toward the project overall.
 
 Dylan Hobbs
