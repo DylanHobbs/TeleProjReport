@@ -35,10 +35,19 @@ In a similar fashion to Distance Vector we can break down the Link State routing
 We were hampered by the virtualisation process here also, as we used the same base network setting for both of our implementations. However this does mean we got around the problem in the same way as distance vector. The network does flood, but it begins the flood already knowing who their neighbours are and the cost to these neighbours.  The details of our implementation of flooding and Dijkstra's algorithm will be explored below.
 
 
-###General Network Setting Implementation 
+###General Network Setting Implementation (What is the same between both approaches)
+	- How routers are setup. eg Config text file.
+	- Limitations imposed by virtualisation and getting around it.
+	- Threaded Servers and Clients
+	- No GUI, minimal interface. Terminal clients and servers.
+	- Packet headers for client. (Different to table headers)
 
+###Distance Vector Implementation (What makes DV different)
+	- Sits on top of Network setting
+	- Timer started by each server. 
+	- At timer, update packets are sent out.
+	- Receives updates and process table.
 
-###Distance Vector Implementation
-
-
-###Link State Implementation 
+###Link State Implementation (What makes LS different)
+	- Flooding description
+	- Dijkstra description
