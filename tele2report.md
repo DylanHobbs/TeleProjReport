@@ -4,7 +4,7 @@ Group: PestoPasta
 ####An Implementation of Distance Vector and Link State Routing Protocols
 
 
-#####Distance Vector
+###Distance Vector
 
 Both of these routing implementations operate in a distributed network setting. That being, nodes only know the costs to their neighbours and can only talk to these neighbours.
 Distance Vector itself can be thought of as a distributed version of the Bellman-Ford algorithm. It was used in early days of the Internet (even back when it was the ARPANET) and can be seen in the protocol RIP. 
@@ -21,7 +21,7 @@ In practice, the limitations imposed by virtualisation made staying true to this
 
 
 
-#####Link State
+###Link State
 
 As stated before this routing implementation also works in a distributed setting. This is widely used in practice as it was more fault tolerant than distance vector. On the downside it is a good bit more computationally intensive when compared to Distance Vector. Where in Distance Vector we spread the work of computing routes out among all the routers in a network, in Link State we give everyone a copy of the topology and let everyone compute their own routes. 
 It has been in use in the Internet/ARPANET since 1979 and a number of modern routing protocols are based off Link State such as OSPF and IS-IS, which are widely used.
