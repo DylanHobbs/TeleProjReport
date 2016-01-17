@@ -34,7 +34,7 @@ In a similar fashion to Distance Vector we can break down the Link State routing
 
 1. Nodes flood the network with their own Link State Packets and through this each node learns the full topology.
 
-2. Every node then computes their own full Routing Table or Forwarding Table by running Dijkstra's algorithm (or similar).
+2. Every node then computes their own full Routing Table or Forwarding Table by running Dijkstra's shortest path algorithm (or similar).
 
 We were hampered by the virtualisation process here also, as we used the same base network setting for both of our implementations. However this does mean we got around the problem in the same way as distance vector. The network does flood, but it begins the flood already knowing who their neighbours are and the cost to these neighbours.  The details of our implementation of flooding and Dijkstra's algorithm will be explored below.
 
