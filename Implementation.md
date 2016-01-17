@@ -3,7 +3,7 @@
 
 ###Virtualise all the things!
 
-To implement both routing algorithms we used a virtualised approach. This allowed us to focus on actually implementing valid forms of distance vector and link state protocols. To virtualise the network we used predefined topologies that are read from a text file in the same directory as the Java binary. All packets are sent to localhost on different ports. Routers and client have a list of user defined ports that they are allowed to talk to.
+To implement both routing algorithms we used a virtuallised approach. This allowed us to focus on actually implementing valid forms of distance vector and link state protocols. To virtualise the network we used predefined topologies that are read from a text file in the same directory as the Java binary. All packets are sent to localhost on different ports. Routers and client have a list of user defined ports that they are allowed to talk to.
 
 We used a Java class called SuperServer to read in the data from the text file containing the network setup. It will then setup each router on it's own thread and pass it the list of it's connections. Each router uses two threads, one to receive packets and one process tables and forward messages. We needed to use two threads to ensure that if a message is received when the router is busy it will not be dropped.
 
