@@ -33,6 +33,8 @@ Byte 1-4 are used for the table length. This is again because of the way java's 
 
 Byte 5-8 are used to store the original table owner (currently for ports could be changed to an ip address).
 
+Byte 9 is reserved for future use. This was done to keep the header length consistent.
+
 ###Routing Tables
 
 Both protocols use the same routing table format. Although the Link State version has two extra methods, clear table and equals. Otherwise the two classes are identical. Routing tables store the routes that each router has available. It has many useful internal functions such as add, update and getNextHop. This allows them to be used and edited easily with minimal impact to the main application.
