@@ -1,11 +1,11 @@
-##Impletmentation of Distance Vector Routing
+##Implementation of Distance Vector Routing
 
 
 ###Virtualise all the things!
 
-To implement both routing algorithms we used a virtualised approach. This allowed us to focus on actually implementing valid forms of distance vector and link state protocols. To virtualise the network we used predefined topologies that are read from a text file in the same directory as the java binary. All packets are sent to localhost on different ports. Routers and client have a list of user defined ports that they are allowed to talk to.
+To implement both routing algorithms we used a virtualised approach. This allowed us to focus on actually implementing valid forms of distance vector and link state protocols. To virtualise the network we used predefined topologies that are read from a text file in the same directory as the Java binary. All packets are sent to localhost on different ports. Routers and client have a list of user defined ports that they are allowed to talk to.
 
-We used a java class called SuperServer to read in the data from the text file containing the network setup. It will then setup each router on it's own thread and pass it the list of it's connections. Each router uses two threads, one to receive packets and one process tables and forward messages. We needed to use two threads to ensure that if a message is received when the router is busy it will not be dropped.
+We used a Java class called SuperServer to read in the data from the text file containing the network setup. It will then setup each router on it's own thread and pass it the list of it's connections. Each router uses two threads, one to receive packets and one process tables and forward messages. We needed to use two threads to ensure that if a message is received when the router is busy it will not be dropped.
 
 ###Packet Headers
 
@@ -13,15 +13,15 @@ Both of our implementations make use of a custom routing protocol and so we had 
 
 #####Client Header
 
-Client headers contain only the absolute necessary data required to keep the size small. Currently the header is only 10 bytes in size which works out quite well considering the way that java converts strings to byte arrays and the maximum safe size of a UDP packet. Despite the small size the header is still resonably extendable in functionality.
+Client headers contain only the absolute necessary data required to keep the size small. Currently the header is only 10 bytes in size which works out quite well considering the way that Java converts strings to byte arrays and the maximum safe size of a UDP packet. Despite the small size the header is still reasonably expendable in functionality.
 
-Byte 0 is used to mark the byte type. This leaves 256 values that can be used for different type (a java byte is -128 to 127 including zero).
+Byte 0 is used to mark the byte type. This leaves 256 values that can be used for different type (a Java byte is -128 to 127 including zero).
 
-Bytes 1-4 are used for the final destination port of the message. The standard UDP header contains the port of the router/client that the message is immediately being send to. Currently these bytes are used as an integer as we use ports to communicate for virtualization. It could easly be reused as an ip address where each byte stores one octet of the address.
+Bytes 1-4 are used for the final destination port of the message. The standard UDP header contains the port of the router/client that the message is immediately being send to. Currently these bytes are used as an integer as we use ports to communicate for virtualization. It could easily be reused as an IP address where each byte stores one octet of the address.
 
 Byte 5 is used to store the message length. Because of the way the datagram packet interprets packet size we had to add our own size field to the header.
 
-Bytes 6-9 are used to store the origin port of the message. This allows clients to know where the message originated from. As with the destination this could easily be changed to an ip address.
+Bytes 6-9 are used to store the origin port of the message. This allows clients to know where the message originated from. As with the destination this could easily be changed to an IP address.
 
 #####Routing Table Header
 
@@ -29,7 +29,7 @@ Routing tables only have a full header in the Link State protocol. They were req
 
 Byte 0 is used to mark the byte type. This tells the router whether it should treat the packet as a table to be processed or a message to be forwarded.
 
-Byte 1-4 are used for the table length. This is again because of the way java's DatagramPacket's size function misinterprets the size of our packets. It treats the array size as the message size even if array elements are null.
+Byte 1-4 are used for the table length. This is again because of the way Java's DatagramPacket's size function misinterprets the size of our packets. It treats the array size as the message size even if array elements are null.
 
 Byte 5-8 are used to store the original table owner (currently for ports could be changed to an ip address).
 
@@ -39,17 +39,17 @@ Byte 9 is reserved for future use. This was done to keep the header length consi
 
 Both protocols use the same routing table format. Although the Link State version has two extra methods, clear table and equals. Otherwise the two classes are identical. Routing tables store the routes that each router has available. It has many useful internal functions such as add, update and getNextHop. This allows them to be used and edited easily with minimal impact to the main application.
 
-All of its variables are private and can only be accessed via the available methods. This means that we could later change the internal structure of the class without affecting any other code. Currently destination, nextHop and cost are stored in seperate array lists. This allows them to be expanded easily. 
+All of its variables are private and can only be accessed via the available methods. This means that we could later change the internal structure of the class without affecting any other code. Currently destination, nextHop and cost are stored in separate array lists. This allows them to be expanded easily. 
 
-Routing tables can be constructed from either an integer and two arrays (owner, connctions, initialCost) or from a byte array received in a packet. Routing tables can be converted to a byte array for sending.
+Routing tables can be constructed from either an integer and two arrays (owner, connections, initialCost) or from a byte array received in a packet. Routing tables can be converted to a byte array for sending.
 
 ###Link State
 
-Our link state implmentation has two main stages, the flooding stage and the processing stage. In our virtualised envirnment these both only run once. In the real world they would run every time a router is added or removed.
+Our link state implementation has two main stages, the flooding stage and the processing stage. In our virtualised environment these both only run once. In the real world they would run every time a router is added or removed.
 
 ####Stage 1 - Flooding
 
-After all the servers are initialised on their independant threads they will send a copy of their routing table to all of their connected neighbours, hence flooding. They will also send this to any clients they are connected to.
+After all the servers are initialised on their independent threads they will send a copy of their routing table to all of their connected neighbours, hence flooding. They will also send this to any clients they are connected to.
 
 When a router receives a table it checks if it has received it before. If the table is new to it it will add it to an ArrayList of RoutingTables and then again 'flood' this new table to all of it's connected neighbours. If it already had received the table it won't store or send it to anyone.
 
@@ -61,9 +61,9 @@ When a router has received all the RoutingTables of all the other routers in the
 
 We use a timer task to schedule this to happen two seconds after the routers are first started.
 
-The timer task calls the createGraph function. This function creates a graph of the entire network from the ArrayList of received RoutingTables. First of all it creates a vertex for each router with an ID which is the router's port. The vertex itself has a cost(initialised to the maximum integer value), a visited boolean, an ArrayList of edges and a pointer to the previous vertex. These are all used by dijkstra's algorithm later.
+The timer task calls the createGraph function. This function creates a graph of the entire network from the ArrayList of received RoutingTables. First of all it creates a vertex for each router with an ID which is the router's port. The vertex itself has a cost(initialised to the maximum integer value), a visited boolean, an ArrayList of edges and a pointer to the previous vertex. These are all used by Dijkstra's algorithm later.
 
-After creating all the vertexes the createGraph function will iterate through each vertex and find it's matching routing table in the ArrayList of received tables. When it finds the corrasponding table for a vertex it creates an edge for each connection the router has (it's immediate neighbors). When the edge is being created createGraph loops through all the vertexes to find the destination of the edge and add it (instead of just the port number), it's cost is also added from the routing table.
+After creating all the vertexes the createGraph function will iterate through each vertex and find it's matching routing table in the ArrayList of received tables. When it finds the corresponding table for a vertex it creates an edge for each connection the router has (it's immediate neighbors). When the edge is being created createGraph loops through all the vertexes to find the destination of the edge and add it (instead of just the port number), it's cost is also added from the routing table.
 
 After all the edges have been added to the vertexes a graph is created. Dijkstra's algorithm is now run on the graph.
 
@@ -79,7 +79,7 @@ The graph loops through the following code while there are still unvisited verte
 
 * It gets all edges of the current vertex.
 
-* Then iterates through each all of the edges and calculates a temporery cost to that vertex from this vertex. If this cost is lower the the current cost of the destination vertex it replaces it. The destination vertex's previous field is also set to this vertex.
+* Then iterates through each all of the edges and calculates a temporary cost to that vertex from this vertex. If this cost is lower the the current cost of the destination vertex it replaces it. The destination vertex's previous field is also set to this vertex.
 
 * The current vertex is then marked as visited.
 
@@ -89,7 +89,7 @@ The graph loops through the following code while there are still unvisited verte
 
 The router then creates another ArrayList of it's immediately connected vertexes (it's neighbors).
 
-Afterword the RoutingTable is cleared for new data.
+Afterward the RoutingTable is cleared for new data.
 
 The router then iterates through each vertex in the graph(except itself). If current vertex in the loop is in the ArrayList of immediately connected vertexes it adds it to the RoutingTable with its associate cost and itself as the next hop and destination.
 
@@ -99,8 +99,8 @@ Eventually it will get to a neighbor vertex that is directly connected to the ro
 
 ###Client
 
-Our client is a simple but efficient. It has a text only userface. The user is asked to type a message and then asked for a destination port. The client will continue to ask the user until they give a valid port (above 1000 below 50000). The client in link state is slightly different as it will reply to a flood message confirming that it is infact online by reply with a table of size one, containing only the router it's connected to.
+Our client is a simple but efficient. It has a text only userface. The user is asked to type a message and then asked for a destination port. The client will continue to ask the user until they give a valid port (above 1000 below 50000). The client in link state is slightly different as it will reply to a flood message confirming that it is in fact online by reply with a table of size one, containing only the router it's connected to.
 
 ####What We Learned(temporary)
 
-By doing this project we learned a lot about networking, both it's support in java and its history. Much research was done before we could even start the project. We had to learn exactly what distance vector and link state routing protocols are. Wikipedia was an invaluable resource for leaning about things such as Dijkstra's algorithm as it contains visualisations of the algorithm at work.
+By doing this project we learned a lot about networking, both it's support in Java and its history. Much research was done before we could even start the project. We had to learn exactly what distance vector and link state routing protocols are. Wikipedia was an invaluable resource for leaning about things such as Dijkstra's algorithm as it contains visualisations of the algorithm at work.
