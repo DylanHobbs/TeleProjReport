@@ -1,12 +1,61 @@
 #Telecoms 2 - Assignment 2
-
-- TODO 	Add in Login for Github guest account.
-			Add javadoc HTML.
-			Add Diagrams.
-			Add Starting section
-
+####An Implementation of Distance Vector and Link State Routing Protocols	
 Group: PestoPasta
-####An Implementation of Distance Vector and Link State Routing Protocols
+##How to Start the Program Examples
+####Distance Vector
+(Defaults to topology 1)
+
+Clients are started in a new terminal window to receive proper prompts. It will take 2 - 3 update cycles for messages to send
+correctly.
+######Topology 1
+```
+	java Server
+
+	(Each client should start in a new Terminal window)
+	java Client 4000 5004
+	java Client 4001 5002
+	java Client 4002 5001
+
+```
+
+######Topology 2:
+```
+	java Server
+
+	(Each client should start in a new Terminal window)
+	java Client 4000 5000
+	java Client 4001 5002
+
+```
+
+
+
+####Link State
+(Defaults to topology 2)
+Clients are started in a new terminal window and *started first*
+######Topology 2:
+```
+	(Each client should start in a new Terminal window)
+	java Client 4000 5000
+	java Client 4001 5002
+
+	java SuperServer
+
+```
+
+
+
+######Topology 1:
+```
+	(Each client should start in a new Terminal window)
+	java Client 4000 5004
+	java Client 4001 5002
+	java Client 4002 5001
+	
+	java SuperServer
+
+```
+
 
 
 ###Distance Vector
@@ -40,8 +89,7 @@ In a similar fashion to Distance Vector we can break down the Link State routing
 We were hampered by the virtualisation process here also, as we used the same base network setting for both of our implementations. However this does mean we got around the problem in the same way as distance vector. The network does flood, but it begins the flood already knowing who their neighbours are and the cost to these neighbours.  The details of our implementation of flooding and Dijkstra's algorithm will be explored below.
 
 
-###General Network Setting Implementation (What is the same between both approaches)
-	- No GUI, minimal interface. Terminal clients and servers.
+##General Network Setting Implementation (What is the same between both approaches)
 ###Virtualise all the things!
 
 To implement both routing algorithms we used a virtuallised approach. This allowed us to focus on actually implementing valid forms of distance vector and link state protocols. To virtualise the network we used predefined topologies that are read from a text file in the same directory as the Java binary. All packets are sent to localhost on different ports. Routers and client have a list of user defined ports that they are allowed to talk to.
@@ -89,8 +137,7 @@ Routing tables can be constructed from either an integer and two arrays (owner, 
 Our client is a simple but efficient. It has a text only userface. The user is asked to type a message and then asked for a destination port. The client will continue to ask the user until they give a valid port (above 1000 below 50000). The client in link state is slightly different as it will reply to a flood message confirming that it is in fact online by reply with a table of size one, containing only the router it's connected to.
 
 
-###Distance Vector Implementation (What makes DV different)
-	-TODO Add a section at the end of every phase evaluating why you chose this
+###Distance Vector Implementation
 Our implementation of the Distance Vector approach sits on top of general network setting. 
 ######Phase 1 - Initialisation
 Once a topology is loaded, the main method will create and start an array of servers to the specifications described in the .txt file. During this phase each server is made aware of it's neighbours and the cost to these connections. These then get added to the Server's Routing Table. Starting the server threads while using Distance Vector will begin a timer for each server that executes the update code at a given time interval. This timer is controlled by a constant and is set to 10 seconds for the demonstration.
@@ -178,18 +225,28 @@ Eventually it will get to a neighbor vertex that is directly connected to the ro
 #####Communication 
 This was a group project and because of this we decided that communication would be very important throughout the project. We thought that Git would be the the best way to organise the code and eliminate conflicts or duplication of work. We chose GitHub as our Git vendor of choice and all of the projects code was committed to there on a regular basis.
 This was our first time using Git in a formal fashion and had the opportunity to learn how branches can be used effectively to work on different sections of the code. Our Link State approach was branched from the Distance Vector code at the stage where the General Network Setting was just about in place. We then used other branches to test code that would otherwise stop the other team members from working, merging them back to master when all major bugs were ironed out.
+We have created a guest account that has access to the repository should it be needed.
 
 In the end we decided to create different Repositories for Distance Vector and Link State as there began to be very large differences between the 2 sets of source files.
 The repositories are currently private but we are attaching a temporary login to a guest account that has read access to both of the repos.
 
 We also found Slack to be a very important tool for communication. It was alert us to commits made to the Git Repository and allowed us to chat about changes or ideas we had. When text communication wasn't enough we used a Mumble server as a VOIP alternative. Overall we felt the communication channels we established were effective and helped us to create a finished project in a coherent fashion.
 
-####What We Learned(temporary)
-
+#####Academic
 By doing this project we learned a lot about networking, both it's support in Java and its history. Much research was done before we could even start the project. We had to learn exactly what distance vector and link state routing protocols are. Wikipedia was an invaluable resource for leaning about things such as Dijkstra's algorithm as it contains visualisations of the algorithm at work.
 
 
-###Closing (temp)
+###Closing
 Overall we found the project to be a lot of fun. It was an interesting project and we decided to model our workflow to be as close to production quality as we could within our skill-level. All of the methods are documents in the source and the commits over time graphs on Github show a persistent effort toward the project overall.
 
+######Guest Login To Github Repo
+```
+Username: supermarkingperson 
+Password: safkl;2j09jf2l
+```
+
+
 Dylan Hobbs
+
+Owen Mooney
+
