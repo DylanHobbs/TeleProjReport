@@ -225,7 +225,6 @@ Eventually it will get to a neighbor vertex that is directly connected to the ro
 #####Communication 
 This was a group project and because of this we decided that communication would be very important throughout the project. We thought that Git would be the the best way to organise the code and eliminate conflicts or duplication of work. We chose GitHub as our Git vendor of choice and all of the projects code was committed to there on a regular basis.
 This was our first time using Git in a formal fashion and had the opportunity to learn how branches can be used effectively to work on different sections of the code. Our Link State approach was branched from the Distance Vector code at the stage where the General Network Setting was just about in place. We then used other branches to test code that would otherwise stop the other team members from working, merging them back to master when all major bugs were ironed out.
-We have created a guest account that has access to the repository should it be needed.
 
 In the end we decided to create different Repositories for Distance Vector and Link State as there began to be very large differences between the 2 sets of source files.
 The repositories are currently private but we are attaching a temporary login to a guest account that has read access to both of the repos.
@@ -238,12 +237,6 @@ By doing this project we learned a lot about networking, both it's support in Ja
 
 ###Closing
 Overall we found the project to be a lot of fun. It was an interesting project and we decided to model our workflow to be as close to production quality as we could within our skill-level. All of the methods are documents in the source and the commits over time graphs on Github show a persistent effort toward the project overall.
-
-######Guest Login To Github Repo
-```
-Username: supermarkingperson 
-Password: safkl;2j09jf2l
-```
 
 
 Dylan Hobbs
